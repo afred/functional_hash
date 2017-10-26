@@ -10,6 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["afredmyers@gmail.com"]
 
   spec.summary       = %q{Easily set hash values to be functions of other values in the same hash.}
+  spec.homepage      = "https://github.com/afred/functional_hash"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
