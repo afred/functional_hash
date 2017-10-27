@@ -8,6 +8,11 @@ RSpec.describe FunctionalHash do
   subject { described_class.new }
 
   context 'accessing a value with square brackets, []' do
+
+    it 'returns nil if not set yet, just like a regular hash' do
+      expect(subject[:does_not_exist]).to eq nil
+    end
+
     context 'when the value is a Proc with 0 arguments' do
       let(:rando) { rand }
       before do
