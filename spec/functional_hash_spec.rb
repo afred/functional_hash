@@ -43,4 +43,21 @@ RSpec.describe FunctionalHash do
       end
     end
   end
+
+  describe '.enable!' do
+    before { FunctionalHash.enable! }
+    it 'monkey patches Hash to add Hash#fn instance method' do
+      expect({}).to respond_to :fn
+    end
+    after { FunctionalHash.disable! }
+  end
+
+  describe 'Hash#fn (after calling FunctionalHash.enable!)' do
+    let(:regular_hash) { { a: -> { "hey there!" } } }
+    before { FunctionalHash.enable! }
+    it 'returns a FunctionalHash copy of the hash' do
+      expect(regular_hash.fn[:a]).to eq "hey there!"
+    end
+    after { FunctionalHash.disable! }
+  end
 end
