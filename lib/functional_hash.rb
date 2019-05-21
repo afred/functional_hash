@@ -32,4 +32,11 @@ class FunctionalHash < Hash
       Hash.class_eval { undef_method :fn }
     end
   end
+
+  def self.from_hash(hash)
+    raise ArgumentError, 'FunctionalHash.from_hash requires a Hash' unless hash.is_a? Hash
+    new.tap do |fn_hash|
+      hash.each { |k, v| fn_hash[k.dup] = v.dup }
+    end
+  end
 end
