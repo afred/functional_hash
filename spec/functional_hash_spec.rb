@@ -65,4 +65,28 @@ RSpec.describe FunctionalHash do
     end
     after { FunctionalHash.disable! }
   end
+
+  describe '.from_hash' do
+    let(:not_hash) { double('Not Hash').tap { |d| allow(d).to receive(:is_a?).with(Hash).and_return(false) } }
+    let(:hash) { { scalar: "foo", obj: Struct.new(:bar).new('value of bar') } }
+    let(:fhash) { FunctionalHash.from_hash(hash) }
+
+    it 'raises an error if the param is not Hash-like' do
+      expect { FunctionalHash.from_hash(not_hash) }.to raise_error ArgumentError
+    end
+
+    it 'creates a FunctionalHash from a Hash' do
+      expect(fhash).to be_a FunctionalHash
+    end
+
+    it 'copies all values from Hash to FunctionalHash' do
+      expect(fhash.to_hash).to eq hash
+    end
+
+    it 'does not contain references to original Hash values' do
+      expect(fhash[:obj].bar).to eq hash[:obj].bar
+      hash[:obj].bar = "new value"
+      expect(fhash[:obj].bar).to_not eq hash[:obj].bar
+    end
+  end
 end
